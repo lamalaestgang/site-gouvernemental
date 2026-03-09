@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gouvernement du Québec — Ministère fictif du Numérique</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --qc-blue: #003087;
+      --qc-blue-light: #0055b3;
+      --qc-red: #c8102e;
+      --qc-gold: #f0a500;
+      --bg: #f4f5f7;
+      --white: #ffffff;
+      --text: #1a1a2e;
+      --muted: #5f6b7a;
+      --border: #d0d5dd;
+      --surface: #eef0f4;
+      --font-head: 'Source Serif 4', Georgia, serif;
+      --font-body: 'Source Sans 3', system-ui, sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── BANDEAU QUÉBEC ── */
+    .qc-bar {
+      background: var(--qc-blue);
+      color: white;
+      font-size: 0.72rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.4rem 2rem;
+    }
+    .qc-bar a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 1.5rem; font-size: 0.68rem; }
+    .qc-bar a:hover { color: white; text-decoration: underline; }
+    .qc-fleur { font-size: 1rem; margin-right: 0.5rem; }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 3px solid var(--qc-blue);
+      padding: 1.2rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    }
+
+    .header-brand { display: flex; align-items: center; gap: 1rem; }
+    .header-logo {
+      width: 44px; height: 44px;
+      background: var(--qc-blue);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 1.3rem; font-weight: 700;
+      font-family: var(--font-head);
+    }
+    .header-title { line-height: 1.2; }
+    .header-title h1 {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--qc-blue);
+    }
+    .header-title p { font-size: 0.72rem; color: var(--muted); }
+
+    .header-search {
+      display: flex; gap: 0;
+    }
+    .header-search input {
+      border: 1px solid var(--border);
+      border-right: none;
+      padding: 0.5rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      width: 220px;
+      outline: none;
+    }
+    .header-search button {
+      background: var(--qc-blue);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    /* ── NAV PRINCIPALE ── */
+    nav.main-nav {
+      background: var(--qc-blue-light);
+    }
+    .nav-items {
+      display: flex;
+      list-style: none;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .nav-items > li { position: relative; }
+    .nav-items > li > a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      padding: 0.85rem 1.2rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .nav-items > li > a:hover,
+    .nav-items > li > a.active {
+      background: var(--qc-blue);
+    }
+
+    /* DROPDOWN */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      background: white;
+      min-width: 220px;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--qc-gold);
+      z-index: 200;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    }
+    .nav-items > li:hover .dropdown { display: block; }
+    .dropdown a {
+      display: block;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.83rem;
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .dropdown a:hover { background: var(--surface); color: var(--qc-blue); }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 2rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .breadcrumb a { color: var(--qc-blue-light); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    /* ── HERO BANNER ── */
+    .hero-banner {
+      background: linear-gradient(135deg, var(--qc-blue) 0%, var(--qc-blue-light) 60%, #1a6bbf 100%);
+      color: white;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: '⚜';
+      position: absolute;
+      right: 3rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 8rem;
+      opacity: 0.06;
+    }
+    .hero-inner { max-width: 1200px; margin: 0 auto; }
+    .hero-banner h2 {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .hero-banner p { font-size: 1rem; opacity: 0.85; max-width: 600px; }
+
+    /* ── ALERTES ── */
+    .alert-bar {
+      background: #fff8e1;
+      border-left: 4px solid var(--qc-gold);
+      padding: 0.75rem 2rem;
+      font-size: 0.83rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .alert-bar strong { color: #7a5100; }
+    .alert-bar span { color: #5a3c00; }
+
+    /* ── MAIN LAYOUT ── */
+    .main-wrapper {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 2rem;
+    }
+
+    /* ── ACTUALITÉS ── */
+    .news-section h3 {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--qc-blue);
+      padding-bottom: 0.6rem;
+      border-bottom: 2px solid var(--qc-blue);
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .news-section h3 a {
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--qc-blue-light);
+      text-decoration: none;
+    }
+    .news-section h3 a:hover { text-decoration: underline; }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+    .filter-btn {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--muted);
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--qc-blue);
+      color: white;
+      border-color: var(--qc-blue);
+    }
+
+    /* ARTICLES */
+    .article-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .article-card {
+      background: white;
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      gap: 1.5rem;
+      transition: box-shadow 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .article-card:hover {
+      box-shadow: 0 4px 16px rgba(0,0,50,0.08);
+      border-color: var(--qc-blue-light);
+    }
+
+    .article-date-block {
+      min-width: 56px;
+      text-align: center;
+      background: var(--qc-blue);
+      color: white;
+      padding: 0.5rem;
+      line-height: 1.2;
+    }
+    .article-date-block .day { font-size: 1.6rem; font-weight: 700; display: block; }
+    .article-date-block .month { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .article-body { flex: 1; }
+    .article-cat {
+      display: inline-block;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.15rem 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    .cat-programme { background: #e3f0ff; color: var(--qc-blue); }
+    .cat-actualite { background: #fff0e3; color: #8a4000; }
+    .cat-communique { background: #e3fff0; color: #006040; }
+
+    .article-title {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+      line-height: 1.35;
+    }
+    .article-card:hover .article-title { color: var(--qc-blue); }
+
+    .article-excerpt { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+    .article-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+    .article-footer span { font-size: 0.7rem; color: var(--muted); }
+    .article-lire {
+      font-size: 0.75rem;
+      color: var(--qc-blue-light);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .article-lire:hover { text-decoration: underline; }
+
+    /* HIDDEN articles */
+    .article-card.hidden { display: none; }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    .sidebar-box {
+      background: white;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .sidebar-box-head {
+      background: var(--qc-blue);
+      color: white;
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.7rem 1rem;
+    }
+    .sidebar-box-body { padding: 1rem; }
+
+    .sidebar-links { list-style: none; }
+    .sidebar-links li {
+      border-bottom: 1px solid var(--border);
+      padding: 0.55rem 0;
+    }
+    .sidebar-links li:last-child { border: none; }
+    .sidebar-links a {
+      font-size: 0.82rem;
+      color: var(--qc-blue-light);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .sidebar-links a:hover { text-decoration: underline; }
+    .sidebar-links a::before { content: '▶'; font-size: 0.5rem; color: var(--qc-gold); }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .stat-item {
+      text-align: center;
+      padding: 0.8rem;
+      background: var(--surface);
+    }
+    .stat-num {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--qc-blue);
+      display: block;
+    }
+    .stat-label { font-size: 0.65rem; color: var(--muted); }
+
+    .newsletter-form { display: flex; flex-direction: column; gap: 0.6rem; }
+    .newsletter-form input {
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.8rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      outline: none;
+    }
+    .newsletter-form input:focus { border-color: var(--qc-blue); }
+    .newsletter-form button {
+      background: var(--qc-blue);
+      color: white;
+      border: none;
+      padding: 0.6rem;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+    .newsletter-form button:hover { background: var(--qc-blue-light); }
+    .newsletter-success {
+      display: none;
+      font-size: 0.78rem;
+      color: #005c2b;
+      background: #e3fff0;
+      padding: 0.5rem;
+      text-align: center;
+    }
+
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
+      align-items: center;
+    }
+    .page-btn {
+      border: 1px solid var(--border);
+      background: white;
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .page-btn:hover, .page-btn.active {
+      background: var(--qc-blue);
+      color: white;
+      border-color: var(--qc-blue);
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      background: var(--qc-blue);
+      color: rgba(255,255,255,0.8);
+      margin-top: 3rem;
+    }
+    .footer-top {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2rem;
+    }
+    .footer-col h4 {
+      color: white;
+      font-family: var(--font-head);
+      font-size: 0.9rem;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.4rem; }
+    .footer-col ul a { color: rgba(255,255,255,0.7); font-size: 0.78rem; text-decoration: none; }
+    .footer-col ul a:hover { color: white; text-decoration: underline; }
+    .footer-bottom {
+      background: rgba(0,0,0,0.2);
+      text-align: center;
+      padding: 0.8rem;
+      font-size: 0.72rem;
+    }
+    .footer-bottom a { color: rgba(255,255,255,0.6); text-decoration: none; margin: 0 0.8rem; }
+
+    /* MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,48,0.5);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: white;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-top: 4px solid var(--qc-blue);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    }
+    .modal-head {
+      background: var(--qc-blue);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-head h3 { font-family: var(--font-head); font-size: 1.1rem; }
+    .modal-close {
+      background: none; border: none; color: white;
+      font-size: 1.4rem; cursor: pointer; line-height: 1;
+    }
+    .modal-body { padding: 1.5rem; font-size: 0.88rem; line-height: 1.8; color: var(--text); }
+    .modal-body p { margin-bottom: 1rem; }
+
+    @media (max-width: 860px) {
+      .main-wrapper { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .qc-bar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- QUÉBEC BAR -->
+<div class="qc-bar">
+  <div><span class="qc-fleur">⚜</span> Gouvernement du Québec</div>
+  <div>
+    <a href="#">Québec.ca</a>
+    <a href="#">Accessibilité</a>
+    <a href="#">English</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-brand">
+    <div class="header-logo">MN</div>
+    <div class="header-title">
+      <h1>Ministère du Numérique</h1>
+      <p>Gouvernement du Québec — Site fictif de démonstration</p>
+    </div>
+  </div>
+  <div class="header-search">
+    <input type="text" id="searchInput" placeholder="Rechercher sur ce site..." />
+    <button onclick="handleSearch()">🔍</button>
+  </div>
+</header>
+
+<!-- NAV PRINCIPALE -->
+<nav class="main-nav">
+  <ul class="nav-items">
+    <li>
+      <a href="#" class="active">Accueil</a>
+    </li>
+    <li>
+      <a href="#">Programmes ▾</a>
+      <div class="dropdown">
+        <a href="#">Aide à la numérisation</a>
+        <a href="#">Programme Intranet gouvernemental</a>
+        <a href="#">Accessibilité Web (SGQRI)</a>
+        <a href="#">Formation continue</a>
+      </div>
+    </li>
+    <li>
+      <a href="#">Publications ▾</a>
+      <div class="dropdown">
+        <a href="#">Rapports annuels</a>
+        <a href="#">Communiqués de presse</a>
+        <a href="#">Politiques et cadres</a>
+      </div>
+    </li>
+    <li>
+      <a href="#">À propos ▾</a>
+      <div class="dropdown">
+        <a href="#">Mission et vision</a>
+        <a href="#">Organigramme</a>
+        <a href="#">Nos équipes</a>
+      </div>
+    </li>
+    <li><a href="#">Nous joindre</a></li>
+  </ul>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="#">Accueil</a><span>›</span>
+  <a href="#">Actualités</a><span>›</span>
+  <span>Toutes les nouvelles</span>
+</div>
+
+<!-- HERO -->
+<div class="hero-banner">
+  <div class="hero-inner">
+    <h2>Actualités et communiqués</h2>
+    <p>Restez informé des dernières nouvelles, programmes et initiatives du Ministère du Numérique du Québec.</p>
+  </div>
+</div>
+
+<!-- ALERTE -->
+<div class="alert-bar">
+  ⚠️ <strong>Avis important :</strong>
+  <span>La mise à jour du portail citoyen sera effectuée le 15 mars 2026. Des interruptions de service sont à prévoir entre 2h et 6h du matin.</span>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrapper">
+
+  <!-- ACTUALITÉS -->
+  <main class="news-section">
+    <h3>
+      Actualités récentes
+      <a href="#">Voir toutes les actualités →</a>
+    </h3>
+
+    <!-- FILTRES -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all" onclick="filterArticles('all', this)">Tous</button>
+      <button class="filter-btn" data-filter="programme" onclick="filterArticles('programme', this)">Programmes</button>
+      <button class="filter-btn" data-filter="actualite" onclick="filterArticles('actualite', this)">Actualités</button>
+      <button class="filter-btn" data-filter="communique" onclick="filterArticles('communique', this)">Communiqués</button>
+    </div>
+
+    <!-- ARTICLES -->
+    <div class="article-list" id="articleList">
+
+      <div class="article-card" data-cat="programme" onclick="openModal('prog1')">
+        <div class="article-date-block">
+          <span class="day">07</span>
+          <span class="month">Mar 2026</span>
+        </div>
+        <div class="article-body">
+          <span class="article-cat cat-programme">Programme</span>
+          <div class="article-title">Lancement du nouveau programme d'aide à l'accessibilité Web pour les organismes publics</div>
+          <div class="article-excerpt">Le gouvernement du Québec annonce un investissement de 4,2 millions de dollars pour soutenir les organismes publics dans la mise en conformité de leurs sites Web avec les normes SGQRI 008.</div>
+          <div class="article-footer">
+            <span>Direction des communications · 3 min de lecture</span>
+            <a href="#" class="article-lire">Lire la suite →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-cat="actualite" onclick="openModal('act1')">
+        <div class="article-date-block" style="background:#8a4000">
+          <span class="day">04</span>
+          <span class="month">Mar 2026</span>
+        </div>
+        <div class="article-body">
+          <span class="article-cat cat-actualite">Actualité</span>
+          <div class="article-title">Refonte complète du portail intranet gouvernemental — Phase 2 en cours</div>
+          <div class="article-excerpt">La seconde phase de refonte du portail intranet gouvernemental sous TYPO3 est désormais lancée. Elle touche 14 ministères et vise à uniformiser l'expérience des fonctionnaires à travers le Québec.</div>
+          <div class="article-footer">
+            <span>Bureau du DPI · 4 min de lecture</span>
+            <a href="#" class="article-lire">Lire la suite →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-cat="communique" onclick="openModal('com1')">
+        <div class="article-date-block" style="background:#006040">
+          <span class="day">28</span>
+          <span class="month">Fév 2026</span>
+        </div>
+        <div class="article-body">
+          <span class="article-cat cat-communique">Communiqué</span>
+          <div class="article-title">Le Québec se positionne comme chef de file en matière de gouvernement numérique en Amérique du Nord</div>
+          <div class="article-excerpt">Selon le rapport annuel de l'OCDE, le Québec occupe le 3e rang mondial pour la qualité de ses services numériques aux citoyens. Une reconnaissance qui témoigne des efforts déployés depuis 2020.</div>
+          <div class="article-footer">
+            <span>Cabinet du Ministre · 2 min de lecture</span>
+            <a href="#" class="article-lire">Lire la suite →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-cat="programme" onclick="openModal('prog2')">
+        <div class="article-date-block">
+          <span class="day">21</span>
+          <span class="month">Fév 2026</span>
+        </div>
+        <div class="article-body">
+          <span class="article-cat cat-programme">Programme</span>
+          <div class="article-title">Nouveau formulaire électronique pour les demandes d'aide à la rénovation numérique</div>
+          <div class="article-excerpt">Les organismes admissibles peuvent désormais soumettre leur demande entièrement en ligne. Le traitement passe de 45 à 10 jours ouvrables grâce au nouveau système intégré.</div>
+          <div class="article-footer">
+            <span>Direction des programmes · 3 min de lecture</span>
+            <a href="#" class="article-lire">Lire la suite →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="article-card" data-cat="actualite" onclick="openModal('act2')">
+        <div class="article-date-block" style="background:#8a4000">
+          <span class="day">14</span>
+          <span class="month">Fév 2026</span>
+        </div>
+        <div class="article-body">
+          <span class="article-cat cat-actualite">Actualité</span>
+          <div class="article-title">Infolettre gouvernementale — 85 000 abonnés et un nouveau design responsive</div>
+          <div class="article-excerpt">La nouvelle mouture de l'infolettre mensuelle du Ministère, produite avec Mailchimp, franchit le cap des 85 000 abonnés. Le taux d'ouverture atteint 38 %, soit le double de la moyenne du secteur public.</div>
+          <div class="article-footer">
+            <span>Direction des communications · 2 min de lecture</span>
+            <a href="#" class="article-lire">Lire la suite →</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /article-list -->
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">Suivant →</button>
+    </div>
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-box">
+      <div class="sidebar-box-head">Liens rapides</div>
+      <div class="sidebar-box-body">
+        <ul class="sidebar-links">
+          <li><a href="#">Accessibilité Web (SGQRI 008)</a></li>
+          <li><a href="#">Formulaires en ligne</a></li>
+          <li><a href="#">Politiques de confidentialité</a></li>
+          <li><a href="#">Portail employé</a></li>
+          <li><a href="#">Guide de rédaction Web</a></li>
+          <li><a href="#">Nous joindre</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sidebar-box">
+      <div class="sidebar-box-head">Chiffres clés 2025–2026</div>
+      <div class="sidebar-box-body">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <span class="stat-num" id="stat1">0</span>
+            <span class="stat-label">Sites intégrés</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat2">0</span>
+            <span class="stat-label">Programmes actifs</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat3">0</span>
+            <span class="stat-label">Documents PDF</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num" id="stat4">0</span>
+            <span class="stat-label">Abonnés infolettre</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-box">
+      <div class="sidebar-box-head">S'abonner à l'infolettre</div>
+      <div class="sidebar-box-body">
+        <div class="newsletter-form">
+          <input type="email" id="nlEmail" placeholder="votre@courriel.qc.ca"/>
+          <button onclick="subscribeNewsletter()">S'abonner gratuitement</button>
+          <div class="newsletter-success" id="nlSuccess">✓ Abonnement confirmé !</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <h4>Ministère du Numérique</h4>
+      <ul>
+        <li><a href="#">À propos</a></li>
+        <li><a href="#">Mission et valeurs</a></li>
+        <li><a href="#">Organigramme</a></li>
+        <li><a href="#">Emplois</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services en ligne</h4>
+      <ul>
+        <li><a href="#">Portail citoyen</a></li>
+        <li><a href="#">Portail employé</a></li>
+        <li><a href="#">Formulaires</a></li>
+        <li><a href="#">Demandes d'accès</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Ressources</h4>
+      <ul>
+        <li><a href="#">Normes Web (SGQRI)</a></li>
+        <li><a href="#">Guide de style</a></li>
+        <li><a href="#">Gabarits TYPO3</a></li>
+        <li><a href="#">Publications</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Nous joindre</h4>
+      <ul>
+        <li><a href="#">1 800 XXX-XXXX</a></li>
+        <li><a href="#">info@mn.gouv.qc.ca</a></li>
+        <li><a href="#">1000, rue de la Capitale</a></li>
+        <li><a href="#">Québec (Québec) G1V 0A1</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <a href="#">Accessibilité</a>
+    <a href="#">Politique de confidentialité</a>
+    <a href="#">Conditions d'utilisation</a>
+    <a href="#">Plan du site</a>
+    · © Gouvernement du Québec 2026 — Site fictif de démonstration
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Titre de l'article</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  // DATA ARTICLES
+  const articles = {
+    prog1: {
+      title: "Programme d'aide à l'accessibilité Web",
+      content: `<p>Le gouvernement du Québec annonce un investissement majeur pour soutenir les organismes publics dans la mise en conformité de leurs sites Web avec les normes SGQRI 008.</p>
+      <p>Ce programme vise à financer des audits d'accessibilité, des formations et la refonte de gabarits HTML afin de garantir l'accès universel aux services numériques.</p>
+      <p>Les organismes admissibles peuvent soumettre leur candidature jusqu'au 30 juin 2026 via le portail en ligne. Un montant maximal de 75 000 $ par organisme est disponible.</p>`
+    },
+    act1: {
+      title: "Refonte du portail intranet gouvernemental — Phase 2",
+      content: `<p>La phase 2 de la refonte de l'intranet gouvernemental est en cours. Ce projet d'envergure touche 14 ministères et utilise le CMS TYPO3 comme plateforme centrale.</p>
+      <p>Les objectifs principaux incluent l'uniformisation des gabarits, l'amélioration de la performance et la mise en place d'un système de gestion de contenu centralisé pour les équipes de communication.</p>
+      <p>La livraison finale est prévue pour l'automne 2026, avec une phase de tests d'accessibilité conformes aux normes W3C WCAG 2.1.</p>`
+    },
+    com1: {
+      title: "Le Québec, chef de file en gouvernement numérique",
+      content: `<p>Le rapport annuel de l'OCDE positionne le Québec au 3e rang mondial pour la qualité de ses services numériques, derrière l'Estonie et la Corée du Sud.</p>
+      <p>Cette reconnaissance souligne les investissements réalisés depuis 2020 dans la modernisation des outils numériques de l'État, notamment la migration vers des CMS standardisés et l'adoption de pratiques d'accessibilité universelle.</p>
+      <p>Le ministre a salué le travail des équipes techniques et des intégrateurs Web qui ont rendu cette transformation possible.</p>`
+    },
+    prog2: {
+      title: "Nouveau formulaire électronique — Aide à la rénovation numérique",
+      content: `<p>Les organismes admissibles au programme d'aide à la rénovation numérique peuvent désormais soumettre leur demande entièrement en ligne.</p>
+      <p>Le nouveau formulaire interactif intègre une validation en temps réel, une sauvegarde automatique et la possibilité de joindre des documents PDF directement.</p>
+      <p>Le délai de traitement est réduit de 45 à 10 jours ouvrables grâce au nouveau système d'acheminement automatique vers les directions concernées.</p>`
+    },
+    act2: {
+      title: "Infolettre gouvernementale — 85 000 abonnés",
+      content: `<p>La refonte de l'infolettre mensuelle, développée avec Mailchimp, a permis d'atteindre 85 000 abonnés, soit une hausse de 40 % en six mois.</p>
+      <p>Le nouveau gabarit responsive, conforme aux standards d'accessibilité, affiche un taux d'ouverture de 38 %, bien au-dessus de la moyenne sectorielle de 19 %.</p>
+      <p>L'équipe Web de la Direction des communications a assuré l'intégration HTML/CSS de tous les composants et la gestion des tests sur différents clients de messagerie.</p>`
+    }
+  };
+
+  // FILTER
+  function filterArticles(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.article-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  }
+
+  // MODAL
+  function openModal(id) {
+    const a = articles[id];
+    document.getElementById('modalTitle').textContent = a.title;
+    document.getElementById('modalBody').innerHTML = a.content;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+  function closeModal(e) {
+    if (!e || e.target === document.getElementById('modalOverlay') || e.currentTarget.classList.contains('modal-close')) {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+  }
+
+  // SEARCH
+  function handleSearch() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (q.length > 1) alert(`Recherche pour : "${q}"\n(Fonctionnalité de démonstration)`);
+  }
+
+  // NEWSLETTER
+  function subscribeNewsletter() {
+    const email = document.getElementById('nlEmail').value.trim();
+    if (!email || !email.includes('@')) {
+      alert('Veuillez entrer une adresse courriel valide.');
+      return;
+    }
+    document.getElementById('nlSuccess').style.display = 'block';
+    document.getElementById('nlEmail').value = '';
+  }
+
+  // COUNTER ANIMATION
+  function animateCounter(el, target, suffix = '') {
+    let count = 0;
+    const step = Math.ceil(target / 60);
+    const timer = setInterval(() => {
+      count = Math.min(count + step, target);
+      el.textContent = count.toLocaleString('fr-CA') + suffix;
+      if (count >= target) clearInterval(timer);
+    }, 25);
+  }
+
+  const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        animateCounter(document.getElementById('stat1'), 147);
+        animateCounter(document.getElementById('stat2'), 23);
+        animateCounter(document.getElementById('stat3'), 4821);
+        animateCounter(document.getElementById('stat4'), 85000);
+        statsObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+
+  statsObserver.observe(document.querySelector('.stats-grid'));
+
+  // PAGINATION
+  document.querySelectorAll('.page-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
